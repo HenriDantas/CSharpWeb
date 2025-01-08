@@ -2,41 +2,8 @@
 using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
-try
-{
-    var artistaDAL = new ArtistaDAL();
-    //artistaDAL.CreateArtista(new Artista("Foo Fighters", "Foo Fighters é uma banda de rock alternativo americana formada por Dave Grohl em 1995."));
-
-    var listaArtistas = artistaDAL.GetArtistas();
-    Console.WriteLine(listaArtistas);
-
-    foreach ( var artista in listaArtistas)
-    {
-        Console.WriteLine(artista);
-    }
-
-    //var artist = new Artista("HENRI GRANDAO", "FortAOe")
-    //{
-    //    FotoPerfil = "teste foto",
-    //    Id = 1,
-    //};
-
-    //artistaDAL.UpdateArtista(artist);
-
-    artistaDAL.DeleteArtista(5);
-
-    listaArtistas = artistaDAL.GetArtistas();
-
-    foreach (var artista in listaArtistas)
-    {
-        Console.WriteLine(artista);
-    }
-
-} catch (Exception ex){
-    Console.WriteLine(ex);
-}
-
-return;
+var context = new ScreenSoundContext();
+var artistaDAL = new ArtistaDAL(context);
 
 Artista ira = new Artista("Ira!", "Banda Ira!");
 Artista beatles = new("The Beatles", "Banda The Beatles");
@@ -82,7 +49,7 @@ void ExibirOpcoesDoMenu()
     if (opcoes.ContainsKey(opcaoEscolhidaNumerica))
     {
         Menu menuASerExibido = opcoes[opcaoEscolhidaNumerica];
-        menuASerExibido.Executar(artistasRegistrados);
+        menuASerExibido.Executar(artistaDAL);
         if (opcaoEscolhidaNumerica > 0) ExibirOpcoesDoMenu();
     } 
     else
