@@ -39,7 +39,7 @@ namespace ScreenSound.Banco
             _context.SaveChanges();
         }
 
-        public T GetRegisterByName(Func<T, bool> condition)
+        public T GetRegisterBy(Func<T, bool> condition)
         {
             return _context.Set<T>().FirstOrDefault(condition);
         }

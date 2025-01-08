@@ -10,7 +10,6 @@ internal class Musica
         Nome = nome;
     }
 
-    [JsonPropertyName("Nome")]
     public string Nome { get; set; }
     public int Id { get; set; }
 

@@ -3,7 +3,7 @@ using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
 var context = new ScreenSoundContext();
-var artistaDAL = new ArtistaDAL(context);
+var artistaDAL = new DAL<Artista>(context);
 
 Artista ira = new Artista("Ira!", "Banda Ira!");
 Artista beatles = new("The Beatles", "Banda The Beatles");

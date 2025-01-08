@@ -5,7 +5,7 @@ namespace ScreenSound.Menus;
 
 internal class MenuMostrarMusicas : Menu
 {
-    public override void Executar(ArtistaDAL artistaDAL)
+    public override void Executar(DAL<Artista> artistaDAL)
     {
         base.Executar(artistaDAL);
         ExibirTituloDaOpcao("Exibir detalhes do artista");
@@ -13,7 +13,7 @@ internal class MenuMostrarMusicas : Menu
         Console.Write("Digite o nome do artista que deseja conhecer melhor: ");
         string nomeDoArtista = Console.ReadLine()!;
 
-        var artistaDB = artistaDAL.GetArtistaByName(nomeDoArtista);
+        var artistaDB = artistaDAL.GetRegisterBy(a => a.Nome == nomeDoArtista);
         if (artistaDB is not null)
         {
             //Artista artista = artistasRegistrados[nomeDoArtista];

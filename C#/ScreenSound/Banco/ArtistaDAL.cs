@@ -9,7 +9,11 @@
 //namespace ScreenSound.Banco
 //{
 
-/* THIS CLASS ARE COMMENTED BECAUSE A GENERIC CLASS ...*/
+/* THIS CLASS AND "MusicaDAL.cs" WERE COMMENTED BECAUSE A GENERIC 
+ * CLASS IS USED FOR THEM, AS THEY USE THE SAME METHODS (CRUD).
+ * 
+ * (these classes are commented just for studies purposes)
+*/
 
 
 //    internal class ArtistaDAL : DAL<Artista> //service / user case area
