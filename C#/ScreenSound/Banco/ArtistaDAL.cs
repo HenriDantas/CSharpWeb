@@ -1,130 +1,133 @@
-﻿using Microsoft.Data.SqlClient;
-using ScreenSound.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using Microsoft.Data.SqlClient;
+//using ScreenSound.Modelos;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace ScreenSound.Banco
-{
-    internal class ArtistaDAL //service / user case area
-    {
-        private readonly ScreenSoundContext _context;
+//namespace ScreenSound.Banco
+//{
 
-        public ArtistaDAL(ScreenSoundContext context)
-        {
-            _context = context;
-        }
-
-        public IEnumerable<Artista> GetArtistas()
-        {
-            return _context.Artistas.ToList();
-            
-            //var lista = new List<Artista>();
-
-            //using (var connection = new ScreenSoundContext().Conectar())
-            //{
-            //    connection.Open();
-
-            //    string query = "SELECT * FROM Artistas";
-
-            //    SqlCommand command = new SqlCommand(query, connection);
-
-            //    using (SqlDataReader reader = command.ExecuteReader())
-            //    {
-            //        while (reader.Read())
-            //        {
-            //            string nomeArtista = Convert.ToString(reader["Nome"]);
-            //            string bioArtista = Convert.ToString(reader["Bio"]);
-            //            int idArtista = Convert.ToInt32(reader["Id"]);
-
-            //            Artista artista = new(nomeArtista, bioArtista) { Id = idArtista };
-
-            //            lista.Add(artista);
-            //        }
-            //    }
+/* THIS CLASS ARE COMMENTED BECAUSE A GENERIC CLASS ...*/
 
 
-            //}
+//    internal class ArtistaDAL : DAL<Artista> //service / user case area
+//    {
+//        private readonly ScreenSoundContext _context;
 
-            //return lista;
-        }
+//        public ArtistaDAL(ScreenSoundContext context) : base(context) { }
 
-        public async void CreateArtista(Artista artista)
-        {
-            _context.Artistas.Add(artista);
-            await _context.SaveChangesAsync();
-            //using (var connection = new ScreenSoundContext().Conectar())
-            //{
-            //    connection.Open();
+//        //public Artista? GetArtistaByName(string name)
+//        //{
+//        //    return _context.Artistas.Where(a => a.Nome == name).FirstOrDefault();
+//        //}
 
-            //    string query = "INSERT INTO Artistas (Nome, FotoPerfil, Bio) VALUES (@nome, @perfilPadrao, @bio)";
+//        //public override IEnumerable<Artista> Get()
+//        //{
+//        //    return _context.Artistas.ToList();
 
-            //    SqlCommand command = new SqlCommand(query, connection);
+//        //    //var lista = new List<Artista>();
 
-            //    //command.Parameters.Add(new SqlParameter()); n bota isso mds q da errorooo
+//        //    //using (var connection = new ScreenSoundContext().Conectar())
+//        //    //{
+//        //    //    connection.Open();
 
-            //    command.Parameters.AddWithValue("@nome", artista.Nome);
-            //    command.Parameters.AddWithValue("@perfilPadrao", artista.FotoPerfil);
-            //    command.Parameters.AddWithValue("@bio", artista.Bio);
+//        //    //    string query = "SELECT * FROM Artistas";
 
-            //    command.ExecuteNonQuery(); //that line is needed to execute change in DB
+//        //    //    SqlCommand command = new SqlCommand(query, connection);
 
-            //}
-        }
+//        //    //    using (SqlDataReader reader = command.ExecuteReader())
+//        //    //    {
+//        //    //        while (reader.Read())
+//        //    //        {
+//        //    //            string nomeArtista = Convert.ToString(reader["Nome"]);
+//        //    //            string bioArtista = Convert.ToString(reader["Bio"]);
+//        //    //            int idArtista = Convert.ToInt32(reader["Id"]);
 
-        public async void UpdateArtista(Artista artista)
-        {
-            _context.Artistas.Update(artista);
-            await _context.SaveChangesAsync();
+//        //    //            Artista artista = new(nomeArtista, bioArtista) { Id = idArtista };
+
+//        //    //            lista.Add(artista);
+//        //    //        }
+//        //    //    }
 
 
-            //using (var connection = new ScreenSoundContext().Conectar())
-            //{
-            //    connection.Open();
+//        //    //}
 
-            //    string query = $"UPDATE Artistas SET Nome = @nome, Bio = @bio WHERE Id = @id";
+//        //    //return lista;
+//        //}
 
-            //    SqlCommand command = new SqlCommand(query, connection);
+//        //public override async void Create(Artista artista)
+//        //{
+//        //    _context.Artistas.Add(artista);
+//        //    await _context.SaveChangesAsync();
+//        //    //using (var connection = new ScreenSoundContext().Conectar())
+//        //    //{
+//        //    //    connection.Open();
 
-            //    command.Parameters.AddWithValue("@nome", artista.Nome);
-            //    command.Parameters.AddWithValue("@bio", artista.Bio);
-            //    command.Parameters.AddWithValue("@fotoPerfil", artista.FotoPerfil);
-            //    command.Parameters.AddWithValue("@id", artista.Id);
+//        //    //    string query = "INSERT INTO Artistas (Nome, FotoPerfil, Bio) VALUES (@nome, @perfilPadrao, @bio)";
 
-            //    int retorno = command.ExecuteNonQuery();
-            //    Console.WriteLine($"Linhas afetadas: {retorno}");
-            //}
-        }
+//        //    //    SqlCommand command = new SqlCommand(query, connection);
 
-        public void DeleteArtista(int id)
-        {
-            // recommended inativate artist but, this column dont exists in that situation
-            var artista = _context.Artistas.Where(a => a.Id == id).FirstOrDefault();
-            _context.Artistas.Remove(artista);
-            _context.SaveChanges();
+//        //    //    //command.Parameters.Add(new SqlParameter()); n bota isso mds q da errorooo
 
-            //using (var connection = new ScreenSoundContext().Conectar())
-            //{
-            //    connection.Open();
+//        //    //    command.Parameters.AddWithValue("@nome", artista.Nome);
+//        //    //    command.Parameters.AddWithValue("@perfilPadrao", artista.FotoPerfil);
+//        //    //    command.Parameters.AddWithValue("@bio", artista.Bio);
 
-            //    string query = "DELETE FROM Artistas WHERE Id = @id";
+//        //    //    command.ExecuteNonQuery(); //that line is needed to execute change in DB
 
-            //    SqlCommand command = new SqlCommand(query, connection);
+//        //    //}
+//        //}
 
-            //    command.Parameters.AddWithValue("@id", id);
+//        //public override async void Update(Artista artista)
+//        //{
+//        //    _context.Artistas.Update(artista);
+//        //    await _context.SaveChangesAsync();
 
-            //    command.ExecuteNonQuery();
 
-            //    int retorno = command.ExecuteNonQuery();
-            //    Console.WriteLine($"Linhas afetadas: {retorno}");
-            //}
-        }
+//        //    //using (var connection = new ScreenSoundContext().Conectar())
+//        //    //{
+//        //    //    connection.Open();
 
-        public Artista? GetArtistaByName(string name)
-        {
-            return _context.Artistas.Where(a => a.Nome == name).FirstOrDefault();
-        }
-    }
-}
+//        //    //    string query = $"UPDATE Artistas SET Nome = @nome, Bio = @bio WHERE Id = @id";
+
+//        //    //    SqlCommand command = new SqlCommand(query, connection);
+
+//        //    //    command.Parameters.AddWithValue("@nome", artista.Nome);
+//        //    //    command.Parameters.AddWithValue("@bio", artista.Bio);
+//        //    //    command.Parameters.AddWithValue("@fotoPerfil", artista.FotoPerfil);
+//        //    //    command.Parameters.AddWithValue("@id", artista.Id);
+
+//        //    //    int retorno = command.ExecuteNonQuery();
+//        //    //    Console.WriteLine($"Linhas afetadas: {retorno}");
+//        //    //}
+//        //}
+
+//        //public override void Delete(Artista artista)
+//        //{
+//        //    // recommended inativate artist but, this column dont exists in that situation
+
+//        //    //var artista = _context.Artistas.Where(a => a.Id == id).FirstOrDefault();
+//        //    _context.Artistas.Remove(artista);
+//        //    _context.SaveChanges();
+
+//        //    //using (var connection = new ScreenSoundContext().Conectar())
+//        //    //{
+//        //    //    connection.Open();
+
+//        //    //    string query = "DELETE FROM Artistas WHERE Id = @id";
+
+//        //    //    SqlCommand command = new SqlCommand(query, connection);
+
+//        //    //    command.Parameters.AddWithValue("@id", id);
+
+//        //    //    command.ExecuteNonQuery();
+
+//        //    //    int retorno = command.ExecuteNonQuery();
+//        //    //    Console.WriteLine($"Linhas afetadas: {retorno}");
+//        //    //}
+//        //}
+
+//    }
+//}

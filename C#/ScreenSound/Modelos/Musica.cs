@@ -1,4 +1,7 @@
-﻿namespace ScreenSound.Modelos;
+﻿using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
+
+namespace ScreenSound.Modelos;
 
 internal class Musica
 {
@@ -7,6 +10,7 @@ internal class Musica
         Nome = nome;
     }
 
+    [JsonPropertyName("Nome")]
     public string Nome { get; set; }
     public int Id { get; set; }
 

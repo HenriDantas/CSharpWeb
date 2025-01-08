@@ -8,24 +8,11 @@ using System.Threading.Tasks;
 
 namespace ScreenSound.Banco
 {
-    internal class MusicaDAL
+    internal class MusicaDAL : DAL<Musica>
     {
         private readonly ScreenSoundContext _context;
-        
-        public MusicaDAL(ScreenSoundContext context)
-        {
-            _context = context;
-        }
 
-        public IEnumerable<Musica> GetMusicas()
-        {
-            return _context.Musica.ToList();
-        }
+        public MusicaDAL(ScreenSoundContext context) : base(context) { }
 
-        public IEnumerable<Musica>GetMusicsByNameArtista(string nameArtista)
-        {
-            //fazer
-            return _context.Musica.ToList();
-        }
     }
 }
