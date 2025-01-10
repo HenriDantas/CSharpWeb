@@ -13,6 +13,7 @@ internal class Musica
     public string Nome { get; set; }
     public int Id { get; set; }
     public int? AnoLancamento { get; set; }
+    public Artista? artista { get; set; }
 
     public void ExibirFichaTecnica()
     {

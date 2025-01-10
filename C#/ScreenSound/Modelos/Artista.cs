@@ -5,7 +5,7 @@ namespace ScreenSound.Modelos;
 
 internal class Artista 
 {
-    private List<Musica> musicas = new List<Musica>();
+    private ICollection<Musica> Musicas = new List<Musica>();
 
     public Artista(string nome, string bio)
     {
@@ -20,15 +20,15 @@ internal class Artista
 
     public void AdicionarMusica(Musica musica)
     {
-        musicas.Add(musica);
+        Musicas.Add(musica);
     }
 
     public void ExibirDiscografia()
     {
         Console.WriteLine($"Discografia do artista {Nome}");
-        foreach (var musica in musicas)
+        foreach (var musica in Musicas)
         {
-            Console.WriteLine($"Música: {musica.Nome}");
+            Console.WriteLine($"Música: {musica.Nome} - Ano: {musica.AnoLancamento}");
         }
     }
 
