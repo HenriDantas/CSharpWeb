@@ -8,19 +8,20 @@ internal class MenuMostrarMusicasAno : Menu
     public override void Executar(DAL<Artista> artistaDAL)
     {
         base.Executar(artistaDAL);
-        ExibirTituloDaOpcao("Exibir TODAS as musicas");
+        ExibirTituloDaOpcao("Exibir TODAS as músicas por ano de lançamento");
 
-        Console.Write("Digite o ano das musicas que deseja ver: ");
-        var anoLancamento = Console.ReadLine()!;
+        Console.Write("Digite o ano das músicas que deseja ver: ");
+        string anoLancamento = Console.ReadLine()!;
 
         var musicaDAL = new DAL<Musica>(new ScreenSoundContext());
 
         var listMusics = musicaDAL.GetAllBy(m => m.AnoLancamento == Convert.ToInt32(anoLancamento));
-        if (listMusics != null)
+        if (listMusics.Count() > 0)
         {
+            Console.WriteLine($"\nExibindo músicas do Ano {anoLancamento}:");
             foreach (var music in listMusics)
             {
-                Console.WriteLine($"\n{music.ToString()}");
+                music.ExibirFichaTecnica();
             }
             Console.WriteLine("\nDigite uma tecla para voltar ao menu principal");
             Console.ReadKey();
@@ -28,7 +29,7 @@ internal class MenuMostrarMusicasAno : Menu
         }
         else
         {
-            Console.WriteLine($"\nNenhuma musica foi encontrada!");
+            Console.WriteLine($"\nNenhuma músicas foi encontrada!");
             Console.WriteLine("Digite uma tecla para voltar ao menu principal");
             Console.ReadKey();
             Console.Clear();
