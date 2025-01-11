@@ -43,5 +43,15 @@ namespace ScreenSound.Banco
         {
             return _context.Set<T>().FirstOrDefault(condition);
         }
+
+        public IEnumerable<T> GetAll(Func<T, int?> condition)
+        {
+            return _context.Set<T>().OrderBy(condition).ToList();
+        }
+
+        public IEnumerable<T> GetAllBy(Func<T, bool> condition)
+        {
+            return _context.Set<T>().Where(condition).ToList();
+        }
     }
 }
