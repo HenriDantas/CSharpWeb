@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace ScreenSound.Modelos; 
 
-internal class Artista 
+public class Artista 
 {
     private ICollection<Musica> Musicas = new List<Musica>();
 
