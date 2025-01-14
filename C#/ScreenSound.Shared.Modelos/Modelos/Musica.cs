@@ -5,14 +5,16 @@ namespace ScreenSound.Modelos;
 
 public class Musica
 {
-    public Musica(string nome)
+    public Musica(string nome, int anoLancamento, Artista artistaa)
     {
         Nome = nome;
+        AnoLancamento = anoLancamento;
+        artista = artistaa;
     }
 
     public string Nome { get; set; }
     public int Id { get; set; }
-    public int? AnoLancamento { get; set; }
+    public int AnoLancamento { get; set; }
     public Artista? artista { get; set; }
 
     public void ExibirFichaTecnica()

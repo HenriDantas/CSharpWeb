@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ScreenSound.API.Requests;
+using ScreenSound.API.Response;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 
@@ -29,10 +31,12 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok(musica);
             });
 
-            app.MapPost("/musica", ([FromServices] DAL<Musica> musicaDAL, [FromBody] Musica musica) =>
+            app.MapPost("/musica", ([FromServices] DAL<Musica> musicaDAL, [FromBody] MusicaRequest musicaRequest) =>
             {
+                var musica = new Musica(musicaRequest.nome, musicaRequest.anoLancamento, musicaRequest.artista);
+
                 if (musica.Nome == null
-                    || musica.AnoLancamento == null
+                || musica.AnoLancamento == null
                     || musica.artista == null)
                 {
                     return Results.NotFound("Preencha todos os campos obrigatórios");
@@ -62,8 +66,10 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok(musica + "\n DELETADO");
             });
 
-            app.MapPut("/musica", ([FromServices] DAL<Musica> musicaDAL, [FromBody] Musica musica) =>
+            app.MapPut("/musica", ([FromServices] DAL<Musica> musicaDAL, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
             {
+                var musica = new Musica(musicaRequestEdit.musica.Nome, musicaRequestEdit.musica.AnoLancamento, musicaRequestEdit.artista);
+
                 if (musica.Nome == null
                     || musica.AnoLancamento == null
                     || musica.artista == null)
@@ -83,6 +89,8 @@ namespace ScreenSound.API.Endpoints
                 updateMusica.artista = musica.artista;
 
                 musicaDAL.Update(updateMusica);
+
+                var artistaResponse = new MusicaResponse(musica.Id, musica.Nome!, musica.artista!.Id, musica.artista.Nome);
 
                 return Results.Ok(musica);
             });
