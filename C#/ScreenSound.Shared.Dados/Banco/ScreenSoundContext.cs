@@ -14,6 +14,7 @@ namespace ScreenSound.Banco
 
         public DbSet<Artista> Artistas { get; set; }
         public DbSet<Musica> Musica { get; set; }
+        public DbSet<Genero> Genero { get; set; }
 
         private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ScreenSoundV0;" +
                                           "Integrated Security=True;Encrypt=False;" +
@@ -23,6 +24,12 @@ namespace ScreenSound.Banco
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(connectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Musica>().HasMany(m => m.Generos)
+                                        .WithMany(g => g.Musicas);
         }
     }
 }

@@ -31,16 +31,22 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok(musica);
             });
 
-            app.MapPost("/musica", ([FromServices] DAL<Musica> musicaDAL, [FromBody] MusicaRequest musicaRequest) =>
+            app.MapPost("/musica", ([FromServices] DAL<Musica> musicaDAL, [FromServices] DAL<Genero> generoDAL, [FromBody] MusicaRequest musicaRequest) =>
             {
-                var musica = new Musica(musicaRequest.nome, musicaRequest.anoLancamento, musicaRequest.artista);
-
-                if (musica.Nome == null
-                || musica.AnoLancamento == null
-                    || musica.artista == null)
+                var musica = new Musica(musicaRequest.nome)
                 {
-                    return Results.NotFound("Preencha todos os campos obrigatórios");
-                }
+                    artistaId = musicaRequest.artistaId ,
+                    AnoLancamento = musicaRequest.anoLancamento,
+                    Generos = musicaRequest.Generos is not null ? GeneroRequestConverter(generoDAL, musicaRequest.Generos )
+                                                                : new List<Genero>()
+                };
+                    
+                //if (musica.Nome == null
+                //|| musica.AnoLancamento == null
+                //    || musica.artista == null)
+                //{
+                //    return Results.NotFound("Preencha todos os campos obrigatórios");
+                //}
 
                 musicaDAL.Create(musica);
 
@@ -68,7 +74,12 @@ namespace ScreenSound.API.Endpoints
 
             app.MapPut("/musica", ([FromServices] DAL<Musica> musicaDAL, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
             {
-                var musica = new Musica(musicaRequestEdit.musica.Nome, musicaRequestEdit.musica.AnoLancamento, musicaRequestEdit.artista);
+                var musica = new Musica(musicaRequestEdit.musica.Nome)
+                {
+                    AnoLancamento = musicaRequestEdit.musica.AnoLancamento, 
+                    artistaId = musicaRequestEdit.artista.Id
+                }
+                ;
 
                 if (musica.Nome == null
                     || musica.AnoLancamento == null
@@ -95,6 +106,35 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok(musica);
             });
 
+        }
+
+        private static ICollection<Genero> GeneroRequestConverter([FromServices] DAL<Genero> generoDAL,ICollection<GeneroRequest> generos)
+        {
+            var listaGeneros = new List<Genero>();
+            foreach (var genero in generos)
+            {
+                var entity = RequestToEntity(genero);
+                    /* o entity marca a entidade como uma entidade rastreável se ele a recuperar.
+                     * é manipulado pelo entity. Caso seja necessário alterar essa entidade que está marcada, 
+                     * ele vai atualizar a informação, ou seja, vai cadastrar novamente o item, como acontecia antes.*/
+
+
+                var generoBD = generoDAL.GetRegisterBy(g => g.Nome.ToLower() == g.Nome.ToLower());
+                if (genero == null)
+                {
+                    listaGeneros.Add(generoBD);
+                } else
+                {
+                    listaGeneros.Add(entity); //pega do banco
+                }
+            }
+
+            return listaGeneros;
+        }
+
+        private static Genero RequestToEntity(GeneroRequest genero)
+        {
+            return new Genero() { Nome = genero.Nome, Descricao = genero.Descricao } ;
         }
     }
 }

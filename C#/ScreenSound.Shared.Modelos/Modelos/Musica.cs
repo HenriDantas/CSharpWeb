@@ -1,21 +1,22 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
 namespace ScreenSound.Modelos;
 
 public class Musica
 {
-    public Musica(string nome, int anoLancamento, Artista artistaa)
+    public Musica(string nome)
     {
         Nome = nome;
-        AnoLancamento = anoLancamento;
-        artista = artistaa;
     }
 
     public string Nome { get; set; }
     public int Id { get; set; }
     public int AnoLancamento { get; set; }
-    public Artista? artista { get; set; }
+    public int artistaId { get; set; }
+    public virtual Artista? artista { get; set; }
+    public virtual ICollection<Genero> Generos { get; set; }
 
     public void ExibirFichaTecnica()
     {

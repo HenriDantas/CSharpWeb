@@ -2,5 +2,5 @@
 
 namespace ScreenSound.API.Requests;
 
-public record MusicaRequest(string nome, int anoLancamento, Artista artista);
+public record MusicaRequest(string nome, int anoLancamento, int artistaId, ICollection<GeneroRequest> Generos = null);
 

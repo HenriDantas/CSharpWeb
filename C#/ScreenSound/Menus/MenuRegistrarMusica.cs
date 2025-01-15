@@ -23,8 +23,10 @@ internal class MenuRegistrarMusica : Menu
             string anoLancamento = Console.ReadLine()!;
 
             //Artista artista = artistasRegistrados[nomeDoArtista];
-            artistaDB.AdicionarMusica(new Musica(tituloDaMusica) { 
-                AnoLancamento = Convert.ToInt32(anoLancamento)
+            artistaDB.AdicionarMusica(new Musica(tituloDaMusica) 
+            { 
+                AnoLancamento = Convert.ToInt32(anoLancamento), 
+                artistaId = artistaDB.Id 
             });
             Console.WriteLine($"A música {tituloDaMusica} de {nomeDoArtista} foi registrada com sucesso!");
 
