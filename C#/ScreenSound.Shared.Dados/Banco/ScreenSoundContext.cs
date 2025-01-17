@@ -11,6 +11,10 @@ namespace ScreenSound.Banco
 {
     public class ScreenSoundContext : DbContext
     {
+        public ScreenSoundContext(DbContextOptions options) : base(options)
+        {
+
+        }
 
         public DbSet<Artista> Artistas { get; set; }
         public DbSet<Musica> Musica { get; set; }
@@ -23,7 +27,13 @@ namespace ScreenSound.Banco
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectionString);
+            if (optionsBuilder.IsConfigured)
+            {
+                return;
+            }
+            optionsBuilder
+                .UseSqlServer(connectionString)
+                .UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

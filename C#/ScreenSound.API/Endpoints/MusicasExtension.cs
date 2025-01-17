@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ScreenSound.API.Requests;
+using ScreenSound.API.RequestsEdit;
 using ScreenSound.API.Response;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
@@ -33,10 +34,10 @@ namespace ScreenSound.API.Endpoints
 
             app.MapPost("/musica", ([FromServices] DAL<Musica> musicaDAL, [FromServices] DAL<Genero> generoDAL, [FromBody] MusicaRequest musicaRequest) =>
             {
-                var musica = new Musica(musicaRequest.nome)
+                var musica = new Musica(musicaRequest.Nome)
                 {
                     artistaId = musicaRequest.artistaId ,
-                    AnoLancamento = musicaRequest.anoLancamento,
+                    AnoLancamento = musicaRequest.AnoLancamento,
                     Generos = musicaRequest.Generos is not null ? GeneroRequestConverter(generoDAL, musicaRequest.Generos )
                                                                 : new List<Genero>()
                 };
@@ -83,7 +84,7 @@ namespace ScreenSound.API.Endpoints
 
                 if (musica.Nome == null
                     || musica.AnoLancamento == null
-                    || musica.artista == null)
+                    || musica.artistaId == null)
                 {
                     return Results.NotFound("Preencha todos os campos obrigatórios");
                 }
@@ -97,13 +98,15 @@ namespace ScreenSound.API.Endpoints
 
                 updateMusica.Nome = musica.Nome;
                 updateMusica.AnoLancamento = musica.AnoLancamento;
-                updateMusica.artista = musica.artista;
+                updateMusica.artistaId = musica.artistaId;
 
                 musicaDAL.Update(updateMusica);
 
-                var artistaResponse = new MusicaResponse(musica.Id, musica.Nome!, musica.artista!.Id, musica.artista.Nome);
+                var musicaArtista = musicaDAL.GetRegisterBy(a => a.Id == musica.artistaId);
 
-                return Results.Ok(musica);
+                var musicaResponse = new MusicaResponse(musica.Id, musica.Nome, musica.artistaId, musicaArtista.Nome);
+
+                return Results.Ok(musicaResponse);
             });
 
         }
@@ -119,13 +122,13 @@ namespace ScreenSound.API.Endpoints
                      * ele vai atualizar a informação, ou seja, vai cadastrar novamente o item, como acontecia antes.*/
 
 
-                var generoBD = generoDAL.GetRegisterBy(g => g.Nome.ToLower() == g.Nome.ToLower());
-                if (genero == null)
+                var generoBD = generoDAL.GetRegisterBy(g => g.Nome.ToUpper().Equals(genero.Nome.ToUpper()));
+                if (generoBD != null)
                 {
                     listaGeneros.Add(generoBD);
                 } else
                 {
-                    listaGeneros.Add(entity); //pega do banco
+                    listaGeneros.Add(entity);
                 }
             }
 

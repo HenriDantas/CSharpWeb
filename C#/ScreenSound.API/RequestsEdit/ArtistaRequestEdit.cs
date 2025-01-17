@@ -1,6 +1,6 @@
 ﻿using ScreenSound.Modelos;
 
-namespace ScreenSound.API.Requests;
+namespace ScreenSound.API.RequestsEdit;
 
 public record ArtistaRequestEdit(Artista artista);
 
