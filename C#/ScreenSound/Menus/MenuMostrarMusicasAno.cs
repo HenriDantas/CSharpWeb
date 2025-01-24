@@ -13,7 +13,7 @@ internal class MenuMostrarMusicasAno : Menu
         Console.Write("Digite o ano das músicas que deseja ver: ");
         string anoLancamento = Console.ReadLine()!;
 
-        var musicaDAL = new DAL<Musica>(new ScreenSoundContext());
+        var musicaDAL = new DAL<Musica>(new ScreenSoundContext(context));
 
         var listMusics = musicaDAL.GetAllBy(m => m.AnoLancamento == Convert.ToInt32(anoLancamento));
         if (listMusics.Count() > 0)
